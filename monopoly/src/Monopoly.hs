@@ -80,33 +80,45 @@ valorDeAlquiler unaPropiedad
 cobrarAlquileres :: Accion
 cobrarAlquileres unParticipante = (flip aumentaDinero unParticipante).sum.(map valorDeAlquiler).propiedadesCompradas $ unParticipante
 
-esDueño :: Propiedad -> Participante -> Bool
-esDueño unaPropiedad unParticipante = any (==unaPropiedad) $ propiedadesCompradas unParticipante
-
 quitarAccion :: Participante -> Participante
 quitarAccion unParticipante = unParticipante { acciones = tail.acciones $ unParticipante }
 
+puedeComprarPropiedad :: Propiedad -> Participante -> Bool
+puedeComprarPropiedad unaPropiedad unParticipante = (dinero unParticipante) >= (precio unaPropiedad) 
+
 hacerBerrinchePor :: Propiedad -> Accion
 hacerBerrinchePor unaPropiedad unParticipante
-    | not.esDueño unaPropiedad $ unParticipante =  (aumentaDinero 10).agregarAccion gritar $ unParticipante
-    | otherwise = quitarAccion unParticipante
-
+    | puedeComprarPropiedad unaPropiedad unParticipante = comprarPropiedad unaPropiedad unParticipante
+    | otherwise = (hacerBerrinchePor unaPropiedad).(aumentaDinero 10).agregarAccion gritar $ unParticipante 
+    
 carolina :: Participante
 carolina = Participante "Carolina" montoInicial accionista [] [pasarPorElBanco, pagarAAccionistas] 
 
 manuel :: Participante
 manuel = Participante "Manuel" montoInicial oferenteSingular [] [pasarPorElBanco, enojarse]
 
+ultimaRonda :: Participante -> Accion
+ultimaRonda unParticipante = (foldl1 (.)).reverse $ acciones unParticipante
 
-{- Para pruebas: -}
+tieneMasDinero :: Participante -> Participante -> Bool
+tieneMasDinero participante1 participante2 = (> dinero participante2).dinero $ participante1 
+
+defineGanador :: Participante -> Participante -> Participante
+defineGanador participante1 participante2
+    | tieneMasDinero participante1 participante2 = participante1
+    | otherwise = participante2
+
+juegoFinal :: Participante -> Participante -> Participante
+juegoFinal participante1 participante2 = defineGanador (ultimaRonda participante1 $ participante1) (ultimaRonda participante2 $ participante2)
+    
 cordoba :: Propiedad
-cordoba = Propiedad "Cordoba" 200
+cordoba = Propiedad "Cordoba" 550
 
 misiones :: Propiedad
-misiones = Propiedad "Misiones" 100
+misiones = Propiedad "Misiones" 450
 
+
+
+{- Para pruebas: -}
 juan :: Participante 
-juan = Participante "Juan" montoInicial accionista [misiones,cordoba] [hacerBerrinchePor cordoba]
-
-juega :: Participante -> Participante
-juega unParticipante = acciones unParticipante !! 0 $ unParticipante
+juan = Participante "Juan" montoInicial accionista [] [pasarPorElBanco,pagarAAccionistas]
