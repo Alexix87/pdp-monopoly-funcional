@@ -80,9 +80,6 @@ valorDeAlquiler unaPropiedad
 cobrarAlquileres :: Accion
 cobrarAlquileres unParticipante = (flip aumentaDinero unParticipante).sum.(map valorDeAlquiler).propiedadesCompradas $ unParticipante
 
-quitarAccion :: Participante -> Participante
-quitarAccion unParticipante = unParticipante { acciones = tail.acciones $ unParticipante }
-
 puedeComprarPropiedad :: Propiedad -> Participante -> Bool
 puedeComprarPropiedad unaPropiedad unParticipante = (dinero unParticipante) >= (precio unaPropiedad) 
 
