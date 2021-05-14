@@ -74,8 +74,8 @@ esPropiedadBarata unaPropiedad = (<150).precio $unaPropiedad
 
 valorDeAlquiler :: Propiedad -> Int
 valorDeAlquiler unaPropiedad
-    | esPropiedadBarata unaPropiedad = 150
-    | otherwise = 200
+    | esPropiedadBarata unaPropiedad = 10
+    | otherwise = 20
 
 cobrarAlquileres :: Accion
 cobrarAlquileres unParticipante = (flip aumentaDinero unParticipante).sum.(map valorDeAlquiler).propiedadesCompradas $ unParticipante
