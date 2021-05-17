@@ -38,8 +38,12 @@ aumentarDinero unMonto unParticipante = unParticipante { dinero = (+unMonto).din
 disminuirDinero :: Int -> Participante -> Participante
 disminuirDinero unMonto unParticipante = unParticipante { dinero = (dinero unParticipante) - unMonto }
 
+cambiarTactica :: Tactica -> Participante -> Participante
+cambiarTactica unaTactica unParticipante = unParticipante {tactica = unaTactica}
+
+
 pasarPorElBanco :: Accion
-pasarPorElBanco unParticipante = aumentarDinero 40 unParticipante {tactica = compradorCompulsivo}
+pasarPorElBanco unParticipante = (aumentarDinero 40).cambiarTactica compradorCompulsivo $ unParticipante
 
 enojarse :: Accion
 enojarse unParticipante = (aumentarDinero 50).agregarAccion gritar $ unParticipante
