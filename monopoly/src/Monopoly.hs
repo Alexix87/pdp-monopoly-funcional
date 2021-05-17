@@ -32,17 +32,17 @@ compradorCompulsivo = "Comprador compulsivo"
 agregarAccion :: Accion -> Participante -> Participante
 agregarAccion unaAccion unParticipante = unParticipante { acciones =(acciones unParticipante) ++ [unaAccion]}
 
-aumentaDinero :: Int -> Participante -> Participante
-aumentaDinero unMonto unParticipante = unParticipante { dinero = (+unMonto).dinero $ unParticipante } 
+aumentarDinero :: Int -> Participante -> Participante
+aumentarDinero unMonto unParticipante = unParticipante { dinero = (+unMonto).dinero $ unParticipante } 
 
-disminuyeDinero :: Int -> Participante -> Participante
-disminuyeDinero unMonto unParticipante = unParticipante { dinero = (dinero unParticipante) - unMonto }
+disminuirDinero :: Int -> Participante -> Participante
+disminuirDinero unMonto unParticipante = unParticipante { dinero = (dinero unParticipante) - unMonto }
 
 pasarPorElBanco :: Accion
-pasarPorElBanco unParticipante = aumentaDinero 40 unParticipante {tactica = compradorCompulsivo}
+pasarPorElBanco unParticipante = aumentarDinero 40 unParticipante {tactica = compradorCompulsivo}
 
 enojarse :: Accion
-enojarse unParticipante = (aumentaDinero 50).agregarAccion gritar $ unParticipante
+enojarse unParticipante = (aumentarDinero 50).agregarAccion gritar $ unParticipante
 
 gritar :: Accion
 gritar unParticipante = unParticipante { nombreDeParticipante = ("AHHH" ++).nombreDeParticipante $ unParticipante }
@@ -66,8 +66,8 @@ esAccionista unParticipante = (==accionista).tactica $ unParticipante
 
 pagarAAccionistas :: Accion
 pagarAAccionistas unParticipante 
-    | esAccionista unParticipante = aumentaDinero 200 unParticipante
-    | otherwise = disminuyeDinero 100 unParticipante
+    | esAccionista unParticipante = aumentarDinero 200 unParticipante
+    | otherwise = disminuirDinero 100 unParticipante
 
 esPropiedadBarata :: Propiedad -> Bool
 esPropiedadBarata unaPropiedad = (<150).precio $unaPropiedad
@@ -78,7 +78,7 @@ valorDeAlquiler unaPropiedad
     | otherwise = 20
 
 cobrarAlquileres :: Accion
-cobrarAlquileres unParticipante = (flip aumentaDinero unParticipante).sum.(map valorDeAlquiler).propiedadesCompradas $ unParticipante
+cobrarAlquileres unParticipante = (flip aumentarDinero unParticipante).sum.(map valorDeAlquiler).propiedadesCompradas $ unParticipante
 
 puedeComprarPropiedad :: Propiedad -> Participante -> Bool
 puedeComprarPropiedad unaPropiedad unParticipante = (dinero unParticipante) >= (precio unaPropiedad) 
@@ -86,7 +86,7 @@ puedeComprarPropiedad unaPropiedad unParticipante = (dinero unParticipante) >= (
 hacerBerrinchePor :: Propiedad -> Accion
 hacerBerrinchePor unaPropiedad unParticipante
     | puedeComprarPropiedad unaPropiedad unParticipante = comprarPropiedad unaPropiedad unParticipante
-    | otherwise = (hacerBerrinchePor unaPropiedad).(aumentaDinero 10).agregarAccion gritar $ unParticipante 
+    | otherwise = (hacerBerrinchePor unaPropiedad).(aumentarDinero 10).agregarAccion gritar $ unParticipante 
     
 carolina :: Participante
 carolina = Participante "Carolina" montoInicial accionista [] [pasarPorElBanco, pagarAAccionistas] 
