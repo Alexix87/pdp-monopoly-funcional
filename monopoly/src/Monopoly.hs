@@ -41,6 +41,8 @@ disminuirDinero unMonto unParticipante = unParticipante { dinero = (dinero unPar
 cambiarTactica :: Tactica -> Participante -> Participante
 cambiarTactica unaTactica unParticipante = unParticipante {tactica = unaTactica}
 
+agregarPropiedad :: Propiedad -> Participante -> Participante
+agregarPropiedad unaPropiedad unParticipante = unParticipante { propiedadesCompradas = unaPropiedad : (propiedadesCompradas unParticipante) }
 
 pasarPorElBanco :: Accion
 pasarPorElBanco unParticipante = (aumentarDinero 40).cambiarTactica compradorCompulsivo $ unParticipante
@@ -55,7 +57,7 @@ ganadoresDeSubasta :: [Tactica]
 ganadoresDeSubasta = [accionista, oferenteSingular]
 
 comprarPropiedad :: Propiedad -> Accion
-comprarPropiedad unaPropiedad unParticipante = unParticipante {dinero = (dinero unParticipante) - (precio unaPropiedad), propiedadesCompradas = propiedadesCompradas unParticipante ++[unaPropiedad]}
+comprarPropiedad unaPropiedad unParticipante = (disminuirDinero.precio $ unaPropiedad).agregarPropiedad unaPropiedad $ unParticipante
 
 esGanadorDeSubasta :: Participante -> Bool
 esGanadorDeSubasta unParticipante = (flip elem ganadoresDeSubasta).tactica $ unParticipante
