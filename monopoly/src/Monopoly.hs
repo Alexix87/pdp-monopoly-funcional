@@ -30,7 +30,7 @@ compradorCompulsivo :: Tactica
 compradorCompulsivo = "Comprador compulsivo"
 
 agregarAccion :: Accion -> Participante -> Participante
-agregarAccion unaAccion unParticipante = unParticipante { acciones =(acciones unParticipante) ++ [unaAccion]}
+agregarAccion unaAccion unParticipante = unParticipante { acciones =unaAccion : (acciones unParticipante)}
 
 aumentarDinero :: Int -> Participante -> Participante
 aumentarDinero unMonto unParticipante = unParticipante { dinero = (+unMonto).dinero $ unParticipante } 
@@ -95,13 +95,13 @@ hacerBerrinchePor unaPropiedad unParticipante
     | otherwise = (hacerBerrinchePor unaPropiedad).(aumentarDinero 10).gritar $ unParticipante 
     
 carolina :: Participante
-carolina = Participante "Carolina" montoInicial accionista [] [pasarPorElBanco, pagarAAccionistas] 
+carolina = Participante "Carolina" montoInicial accionista [] [pagarAAccionistas, pasarPorElBanco] 
 
 manuel :: Participante
-manuel = Participante "Manuel" montoInicial oferenteSingular [] [pasarPorElBanco, enojarse]
+manuel = Participante "Manuel" montoInicial oferenteSingular [] [enojarse, pasarPorElBanco]
 
 ultimaRonda :: Participante -> Accion
-ultimaRonda unParticipante = (foldl1 (.)).reverse $ acciones unParticipante
+ultimaRonda unParticipante = (foldl (.) id) $ acciones unParticipante
 
 tieneMasDinero :: Participante -> Participante -> Bool
 tieneMasDinero participante1 participante2 = (> dinero participante2).dinero $ participante1 
@@ -120,8 +120,6 @@ cordoba = Propiedad "Cordoba" 550
 misiones :: Propiedad
 misiones = Propiedad "Misiones" 450
 
-
-
 {- Para pruebas: -}
 juan :: Participante 
-juan = Participante "Juan" montoInicial accionista [] [pasarPorElBanco,pagarAAccionistas]
+juan = Participante "Juan" montoInicial accionista [] [hacerBerrinchePor cordoba,subastar misiones,pasarPorElBanco]
