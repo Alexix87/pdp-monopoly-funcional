@@ -64,7 +64,7 @@ esGanadorDeSubasta unParticipante = (flip elem ganadoresDeSubasta).tactica $ unP
 
 subastar :: Propiedad -> Accion
 subastar unaPropiedad unParticipante
-    | esGanadorDeSubasta unParticipante = comprarPropiedad unaPropiedad unParticipante
+    | (esGanadorDeSubasta unParticipante) && (dinero unParticipante >= precio unaPropiedad) = comprarPropiedad unaPropiedad unParticipante
     | otherwise = unParticipante
 
 esAccionista :: Participante -> Bool
@@ -92,7 +92,7 @@ puedeComprarPropiedad unaPropiedad unParticipante = (dinero unParticipante) >= (
 hacerBerrinchePor :: Propiedad -> Accion
 hacerBerrinchePor unaPropiedad unParticipante
     | puedeComprarPropiedad unaPropiedad unParticipante = comprarPropiedad unaPropiedad unParticipante
-    | otherwise = (hacerBerrinchePor unaPropiedad).(aumentarDinero 10).agregarAccion gritar $ unParticipante 
+    | otherwise = (hacerBerrinchePor unaPropiedad).(aumentarDinero 10).gritar $ unParticipante 
     
 carolina :: Participante
 carolina = Participante "Carolina" montoInicial accionista [] [pasarPorElBanco, pagarAAccionistas] 
