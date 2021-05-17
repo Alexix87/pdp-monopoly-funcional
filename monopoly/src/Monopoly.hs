@@ -101,7 +101,7 @@ manuel :: Participante
 manuel = Participante "Manuel" montoInicial oferenteSingular [] [enojarse, pasarPorElBanco]
 
 ultimaRonda :: Participante -> Accion
-ultimaRonda unParticipante = (foldl (.) id) $ acciones unParticipante
+ultimaRonda unParticipante = (foldl (.) id).acciones $ unParticipante
 
 tieneMasDinero :: Participante -> Participante -> Bool
 tieneMasDinero participante1 participante2 = (> dinero participante2).dinero $ participante1 
