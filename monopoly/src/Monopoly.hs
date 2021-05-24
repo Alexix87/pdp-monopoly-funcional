@@ -64,7 +64,7 @@ esGanadorDeSubasta unParticipante = (flip elem ganadoresDeSubasta).tactica $ unP
 
 subastar :: Propiedad -> Accion
 subastar unaPropiedad unParticipante
-    | (esGanadorDeSubasta unParticipante) && (dinero unParticipante >= precio unaPropiedad) = comprarPropiedad unaPropiedad unParticipante
+    | (esGanadorDeSubasta unParticipante) && (puedeComprarPropiedad unaPropiedad unParticipante) = comprarPropiedad unaPropiedad unParticipante
     | otherwise = unParticipante
 
 esAccionista :: Participante -> Bool
